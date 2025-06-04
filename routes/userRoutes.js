@@ -1,11 +1,13 @@
-import express from 'express';
-import userController from '../controllers/userController.js';
+import { Router } from "express";
+import UserController from "../controllers/userController.js";
 
-const router = express.Router();
+const userRouter = Router();
+const controller = new UserController();
 
-router.get('/', userController.getAllUsers);
-router.get('/:id', userController.getUserById);
-router.post('/', userController.createUser);
-router.put('/:id', userController.updateUser);
+userRouter.get('/', (req, res) => controller.getAllUsers(req, res));
+userRouter.get('/email/:mail', (req, res) => controller.getUserByEmail(req, res)); 
+userRouter.get('/:id', (req, res) => controller.getUserById(req, res));
+userRouter.post('/', (req, res) => controller.createUser(req, res));
+userRouter.put('/:id', (req, res) => controller.updateUser(req, res));
 
-export default router;
+export default userRouter;

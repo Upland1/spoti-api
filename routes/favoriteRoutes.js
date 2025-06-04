@@ -1,8 +1,13 @@
-import express from 'express';
-import favoriteController from '../controllers/favoriteController.js';
+import { Router } from "express";
+import FavoriteController from "../controllers/favoriteController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
-const router = express.Router();
+const favoriteRouter = Router();
+const controller = new FavoriteController();
 
-router.post('/:userId/favorites', favoriteController.createFavorite);
+favoriteRouter.get('/', authMiddleware, (req, res) => controller.getAllFavorites(req, res));
+favoriteRouter.get('/:id', authMiddleware, (req, res) => controller.getFavoriteById(req, res));
+favoriteRouter.post('/', authMiddleware, (req, res) => controller.createFavorite(req, res));
+favoriteRouter.put('/:id', authMiddleware, (req, res) => controller.updateFavorite(req, res));
 
-export default router;
+export default favoriteRouter;
